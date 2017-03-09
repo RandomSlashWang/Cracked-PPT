@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>轮播图</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+	<style type="text/css">
+		*{
+			margin:0;
+			padding:0;
+			list-style:none;
+		}
+		.wrap{
+			width:560px;
+			height:300px;
+			margin:100px auto;
+			position:relative;
+		}
+		.mask-layer{
+			perspective:600px;
+		}
+		.mask-layer>p{
+			position:absolute;
+			width:140px;
+			height:100px;
+			background:url(images/0.jpg);
+			font-size:40px;
+			line-height:100px;
+			text-align:center;
+		}
+		.controller>.leftbtn{
+			position:absolute;
+			width:45px;
+			height:45px;
+			top:122px;
+			left:10px;
+			background:url("images/icons.png") no-repeat 0 0;
+			cursor:pointer;
+		}
+		.controller>.rightbtn{
+			position:absolute;
+			width:45px;
+			height:45px;
+			top:122px;
+			right:10px;
+			background:url("images/icons.png") no-repeat 0 -45px;
+			cursor:pointer;
+		}
+		.controller-bottom{
+			position:absolute;
+			right:224px;
+			bottom:12px;
+		}
+		.controller-bottom li{
+			float:left;
+			width:15px;
+			height:15px;
+			margin-right:8px;
+			background:url("images/icons.png") no-repeat -23px -125px;
+			cursor:pointer;
+		}
+		.controller-bottom .corner{
+			background-position:-8px -125px;
+		}
+
+	</style>
+</head>
+<body>
+	<div class="wrap">
+		<div class="content">
+			<div class="mask-layer">
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+				<p></p>
+			</div>
+			<div class="show-layer">
+				<img src="images/1.jpg">
+			</div>
+			<div class="controller">
+				<div class="leftbtn"></div>
+				<div class="rightbtn"></div>
+			</div>
+			<ul class="controller-bottom">
+				<li class="corner"></li>
+				<li></li>
+				<li></li>
+				<li></li>
+				<li></li>
+			</ul>
+		</div>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	$(function(){
+		$(document).ready(function(){
+			var maskLayerPic = 0;
+			$('.mask-layer p').each(function(){
+				var row = $(this).index()%4*140;
+				var list = parseInt($(this).index() / 4) * 100;
+				$(this).css({'left':row,'top':list,'background-position':(-row)+'px '+(-list)+'px'});
+			});
+			$('.rightbtn').click(function(){
+				if(maskLayerPic<4){
+					maskLayerPic++;
+				}else{
+					maskLayerPic=0;
+				}
+				$('.controller-bottom li').each(function(){
+					$('.controller-bottom li').removeClass('corner');
+					$('.controller-bottom li:eq('+maskLayerPic+')').addClass('corner');
+				});
+				$('.mask-layer p').each(function (){
+					var randomNumber1 = Math.floor(Math.random()*361);
+					var randomNumber2 = Math.floor(Math.random()*(-361));
+					var randomNumber = randomNumber1 + randomNumber2;
+					$(this).css('transition','all 1s linear');
+					$(this).css('opacity','1');
+					$(this).css('transform','rotateX('+randomNumber+'deg) rotateY('+randomNumber+'deg) translateZ(200px)');
+					$('.show-layer img').attr('src','images/'+maskLayerPic+'.jpg');
+					setTimeout(function(){
+						$('.mask-layer p').css('transition','all 1s ease');
+						$('.mask-layer p').css('opacity','0');
+						$('.mask-layer p').css('transform','none');
+						$('.mask-layer p').css('background-image','url("images/'+maskLayerPic+'.jpg")');
+					},1000);
+				});
+			});
+
+			$('.leftbtn').click(function(){
+				if(maskLayerPic>0){
+					maskLayerPic--;
+				}else{
+					maskLayerPic=4;
+				}
+				$('.controller-bottom li').each(function(){
+					$('.controller-bottom li').removeClass('corner');
+					$('.controller-bottom li:eq('+maskLayerPic+')').addClass('corner');
+				});
+				$('.mask-layer p').each(function(){
+					var randomNumber1 = Math.floor(Math.random()*361);
+					var randomNumber2 = Math.floor(Math.random()*(-361));
+					var randomNumber = randomNumber1 + randomNumber2;
+					$(this).css('transition','all 1s ease');
+					$(this).css('opacity','1');
+					$(this).css('transform','rotateX('+randomNumber+'deg) rotateY('+randomNumber+'deg) translateZ(200px)');
+					$('.show-layer img').attr('src','images/'+maskLayerPic+'.jpg');
+					setTimeout(function(){
+						$('.mask-layer p').css('transition','all 1s ease');
+						$('.mask-layer p').css('transform','none');
+						$('.mask-layer p').css('opacity','0');
+						$('.mask-layer p').css('background-image','url("images/'+maskLayerPic+'.jpg")');
+					},1000);
+				});
+			});
+		});
+	});
+</script>
+
